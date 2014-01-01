@@ -2,13 +2,10 @@
 
 module Leankit.Types.LaneShort where
 
-import Control.Applicative ((<$>), (<*>))
-import Control.Monad (mzero)
 import Data.Aeson.TH
 
 import Leankit.Types.TH
 import Leankit.Types.Common
-import Leankit.Types.Card (Card)
 
 
 data LaneShort = LaneShort {

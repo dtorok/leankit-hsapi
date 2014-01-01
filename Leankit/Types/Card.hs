@@ -2,13 +2,10 @@
 
 module Leankit.Types.Card where
 
-import Control.Applicative ((<$>), (<*>))
-import Control.Monad (mzero)
+import Control.Applicative ((<$>))
+
 import Data.Aeson
 import Data.Aeson.TH
-import Data.Aeson.Types
-import Data.Colour
-import Data.Colour.SRGB
 import Data.List.Split
 
 import Leankit.Types.TH
@@ -22,7 +19,7 @@ newtype Tags = Tags [String] deriving (Eq, Show)
 instance FromJSON Tags where
         parseJSON Null = return $ Tags []
         parseJSON v = toTags <$> parseJSON v where
-                        toTags = Tags . (splitOn ",")
+                        toTags = Tags . splitOn ","
 
 
 data Card = Card {

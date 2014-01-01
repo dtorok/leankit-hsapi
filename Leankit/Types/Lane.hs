@@ -2,8 +2,6 @@
 
 module Leankit.Types.Lane where
 
-import Control.Applicative ((<$>), (<*>))
-import Control.Monad (mzero)
 import Data.Aeson.TH
 
 import Leankit.Types.TH

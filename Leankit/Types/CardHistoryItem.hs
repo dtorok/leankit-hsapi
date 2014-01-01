@@ -60,12 +60,13 @@ data CardFieldChange = CardFieldChange {
 } deriving (Eq, Show)
 
 instance FromJSON CardFieldChange where
-        parseJSON (Object v) = do CardFieldChange
+        parseJSON (Object v) = CardFieldChange
                                         <$> v .:  "FieldName"
                                         <*> v .:  "NewValue"
                                         <*> v .:? "OldValue"
                                         <*> v .:? "NewDueDate"
                                         <*> v .:? "OldDueDate"
+        parseJSON _          = mzero
 
 
 -- ==================
@@ -103,3 +104,4 @@ instance FromJSON CardHistoryDetails where
                         "CardFieldsChangedEventDTO" -> CardFieldChangedEventDetails
                                                         <$> v .:  "Changes"
                         _                           -> return UnknownEventDetails -- fallback
+        parseJSON _          = mzero

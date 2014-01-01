@@ -20,13 +20,13 @@ import Leankit.Types.CardHistoryItem (CardHistoryItem)
 import Leankit.Types.CardComment (CardComment)
 
 -- TODO what can we do with this?
-(<=<) :: Monad m => (b->m c) -> (a -> m b) -> (a -> m c)
+(<=<) :: Monad m => (b->m c) -> (a -> m b) -> a -> m c
 (<=<) fbc fab a = fbc =<< fab a
 
-(<==<) :: Monad m => (b->m c) -> (a1 -> a2 -> m b) -> (a1 -> a2 -> m c)
+(<==<) :: Monad m => (b->m c) -> (a1 -> a2 -> m b) -> a1 -> a2 -> m c
 (<==<) fbc fab a1 a2 = fbc =<< fab a1 a2
 
-(<===<) :: Monad m => (b->m c) -> (a1 -> a2 -> a3 -> m b) -> (a1 -> a2 -> a3 -> m c)
+(<===<) :: Monad m => (b->m c) -> (a1 -> a2 -> a3 -> m b) -> a1 -> a2 -> a3 -> m c
 (<===<) fbc fab a1 a2 a3 = fbc =<< fab a1 a2 a3
 
 ---------
@@ -45,7 +45,7 @@ getBoardsEither creds = _apiCallEither creds "/Boards/"
 
 
 -- getBoard
-getBoard :: Credentials -> BoardID -> IO (Board)
+getBoard :: Credentials -> BoardID -> IO Board
 getBoard = _either2fail <==< getBoardEither
 
 getBoardMaybe :: Credentials -> BoardID -> IO (Maybe Board)
@@ -56,7 +56,7 @@ getBoardEither cred (BoardID boardID) = _apiCallEither cred ("/Boards/" ++ show 
 
 
 -- getCard
-getCard :: Credentials -> BoardID -> CardID -> IO (Card)
+getCard :: Credentials -> BoardID -> CardID -> IO Card
 getCard = _either2fail <===< getCardEither
 
 getCardMaybe :: Credentials -> BoardID -> CardID -> IO (Maybe Card)
@@ -67,14 +67,14 @@ getCardEither cred boardID (CardID cardID) = _boardApiCallEither cred boardID ("
 
 
 -- getBoardIdentifiers
-getBoardIdentifiers :: Credentials -> BoardID -> IO (BoardIdentifierSet)
+getBoardIdentifiers :: Credentials -> BoardID -> IO BoardIdentifierSet
 getBoardIdentifiers = _either2fail <==< getBoardIdentifiersEither
 
 getBoardIdentifiersMaybe :: Credentials -> BoardID -> IO (Maybe BoardIdentifierSet)
 getBoardIdentifiersMaybe = _either2maybe <==< getBoardIdentifiersEither
 
 getBoardIdentifiersEither :: Credentials -> BoardID -> IO (Either String BoardIdentifierSet)
-getBoardIdentifiersEither cred boardID = _boardApiCallEither cred boardID ("/GetBoardIdentifiers/")
+getBoardIdentifiersEither cred boardID = _boardApiCallEither cred boardID "/GetBoardIdentifiers/"
 
 
 -- getNewerIfExists
@@ -93,7 +93,7 @@ getNewerIfExistsEither cred boardID boardVersion =
 
 
 -- getBoardHistorySince
-getBoardHistorySince :: Credentials -> BoardID -> Int -> IO ([BoardHistoryItem])
+getBoardHistorySince :: Credentials -> BoardID -> Int -> IO [BoardHistoryItem]
 getBoardHistorySince = _either2fail <===< getBoardHistorySinceEither
 
 getBoardHistorySinceMaybe :: Credentials -> BoardID -> Int -> IO (Maybe [BoardHistoryItem])
@@ -105,7 +105,7 @@ getBoardHistorySinceEither cred boardID boardVersion =
 
 
 -- getCardByExternalId
-getCardByExternalId :: Credentials -> BoardID -> String -> IO (Card)
+getCardByExternalId :: Credentials -> BoardID -> String -> IO Card
 getCardByExternalId = _either2fail <===< getCardByExternalIdEither
 
 getCardByExternalIdMaybe :: Credentials -> BoardID -> String -> IO (Maybe Card)
@@ -116,7 +116,7 @@ getCardByExternalIdEither cred boardID externalID = _boardApiCallEither cred boa
 
 
 -- getBackLog
-getBackLog :: Credentials -> BoardID -> IO ([Lane])
+getBackLog :: Credentials -> BoardID -> IO [Lane]
 getBackLog = _either2fail <==< getBackLogEither
 
 getBackLogMaybe :: Credentials -> BoardID -> IO (Maybe [Lane])
@@ -127,7 +127,7 @@ getBackLogEither cred boardID = _boardApiCallEither cred boardID "/Backlog/"
 
 
 -- getArchive
-getArchive :: Credentials -> BoardID -> IO ([LaneLayout])
+getArchive :: Credentials -> BoardID -> IO [LaneLayout]
 getArchive = _either2fail <==< getArchiveEither
 
 getArchiveMaybe :: Credentials -> BoardID -> IO (Maybe [LaneLayout])
@@ -138,7 +138,7 @@ getArchiveEither cred boardID = _boardApiCallEither cred boardID "/Archive/"
 
 
 -- getCardHistory
-getCardHistory :: Credentials -> BoardID -> CardID -> IO ([CardHistoryItem])
+getCardHistory :: Credentials -> BoardID -> CardID -> IO [CardHistoryItem]
 getCardHistory = _either2fail <===< getCardHistoryEither
 
 getCardHistoryMaybe :: Credentials -> BoardID -> CardID -> IO (Maybe [CardHistoryItem])
@@ -150,7 +150,7 @@ getCardHistoryEither cred (BoardID boardID) (CardID cardID) =
 
 
 -- getCardComments
-getCardComments :: Credentials -> BoardID -> CardID -> IO ([CardComment])
+getCardComments :: Credentials -> BoardID -> CardID -> IO [CardComment]
 getCardComments = _either2fail <===< getCardCommentsEither
 
 getCardCommentsMaybe :: Credentials -> BoardID -> CardID -> IO (Maybe [CardComment])
@@ -170,12 +170,12 @@ _either2fail (Left err) = fail err
 _either2fail (Right res) = return res
 
 _either2maybe :: FromJSON a => Either String a -> IO (Maybe a)
-_either2maybe (Left err) = return Nothing
+_either2maybe (Left _) = return Nothing
 _either2maybe (Right res) = return $ Just res
 
 _boardApiCallEither :: FromJSON a => Credentials -> BoardID -> String -> IO (Either String a)
 _boardApiCallEither cred (BoardID boardID) urlfrag = 
-	_apiCallEither ((cred)) ("/Board/" ++ show boardID ++ urlfrag) 
+	_apiCallEither cred ("/Board/" ++ show boardID ++ urlfrag) 
 	
 _apiCallEither :: FromJSON a => Credentials -> String -> IO (Either String a)
 _apiCallEither creds url = parseReplyData <$> _loadPath url creds
@@ -185,6 +185,6 @@ _loadPath lpath cred = do
         (_, body) <- curlGetString_ url opts
         return body
     where
-        url = "http://" ++ (_company cred) ++ ".leankitkanban.com/Kanban/Api" ++ lpath
+        url = "http://" ++ _company cred ++ ".leankitkanban.com/Kanban/Api" ++ lpath
         opts = [CurlUserPwd authstr]
         authstr = _username cred ++ ":" ++ _password cred

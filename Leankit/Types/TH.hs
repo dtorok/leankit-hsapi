@@ -7,7 +7,8 @@ import Data.Aeson.Types
 key2field :: String -> String
 key2field [] = []
 key2field "_wip" = "WIP"
-key2field ('_':x:xs) = ((toUpper x) : xs)
-key2field fn = undefined -- fail $ "Invalid fieldname" ++ fn
+key2field ('_':x:xs) = toUpper x : xs
+key2field _ = undefined
 
+parseOptions :: Options
 parseOptions = defaultOptions{fieldLabelModifier=key2field}

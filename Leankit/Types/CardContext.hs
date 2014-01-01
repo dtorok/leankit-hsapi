@@ -2,8 +2,6 @@
 
 module Leankit.Types.CardContext where
 
-import Control.Applicative ((<$>), (<*>))
-import Data.Aeson
 import Data.Aeson.TH
 
 import Leankit.Types.Common

@@ -2,9 +2,6 @@
 
 module Leankit.Types.AssignedUser where
 
-import Control.Applicative ((<$>), (<*>))
-import Control.Monad (mzero)
-import Data.Aeson
 import Data.Aeson.TH
 
 import Leankit.Types.Common

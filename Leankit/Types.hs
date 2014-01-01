@@ -25,14 +25,14 @@ parseReply :: FromJSON a => ByteString -> Either String (Reply a)
 parseReply = eitherDecode
 
 parseReplyData :: FromJSON a => ByteString -> Either String a
-parseReplyData json = 
+parseReplyData json_ = 
 	case reply of
 		Left s     -> Left s
 		Right repl -> case _replyData repl of
 						[]              -> Left  $ errorMsg repl
 						(Nothing:[])    -> Left  $ errorMsg repl
-						(Just rdata:[]) -> Right $ rdata
-						(xs)            -> Left  $ errorMsg repl ++ " (multiple items in result data)"
+						(Just rdata:[]) -> Right   rdata
+						_               -> Left  $ errorMsg repl ++ " (multiple items in result data)"
 	where 
-		reply = parseReply json
+		reply = parseReply json_
 		errorMsg repl = show (_replyCode repl) ++ ": " ++ _replyText repl

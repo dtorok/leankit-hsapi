@@ -1,9 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Leankit.Types.Common where
 
-import Control.Applicative ((<$>), pure)
+import Control.Applicative ((<$>))
 import Data.Aeson.Types
-import Data.Attoparsec.Number
 import Data.Colour
 import Data.Colour.SRGB
 
