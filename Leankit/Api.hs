@@ -1,4 +1,49 @@
-module Leankit.Api where
+module Leankit.Api 
+	(
+		getBoards,
+		getBoardsMaybe,
+		getBoardsEither,
+
+		getBoard,
+		getBoardMaybe,
+		getBoardEither,
+
+		getCard,
+		getCardMaybe,
+		getCardEither,
+
+		getBoardIdentifiers,
+		getBoardIdentifiersMaybe,
+		getBoardIdentifiersEither,
+
+		getNewerIfExists,
+		getNewerIfExistsMaybe,
+		getNewerIfExistsEither,
+
+		getBoardHistorySince,
+		getBoardHistorySinceMaybe,
+		getBoardHistorySinceEither,
+
+		getCardByExternalId,
+		getCardByExternalIdMaybe,
+		getCardByExternalIdEither,
+
+		getBackLog,
+		getBackLogMaybe,
+		getBackLogEither,
+
+		getArchive,
+		getArchiveMaybe,
+		getArchiveEither,
+
+		getCardHistory,
+		getCardHistoryMaybe,
+		getCardHistoryEither,
+
+		getCardComments,
+		getCardCommentsMaybe,
+		getCardCommentsEither
+	) where
 
 import Data.ByteString.Lazy.Internal (ByteString)
 import Network.Curl
