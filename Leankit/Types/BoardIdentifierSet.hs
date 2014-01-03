@@ -23,8 +23,8 @@ data BoardIdentifierSet = BoardIdentifierSet {
 
 	_cardTypes        :: [BoardIdentifier CardTypeID],
 	_boardUsers       :: [BoardIdentifier UserID],
-	_priorities       :: [BoardIdentifier PriorityID]
---  _classesOfService :: Something -- TODO
+	_priorities       :: [BoardIdentifier PriorityID],
+	_classesOfService :: [BoardIdentifier ClassOfServiceID]
 --	_boardStatistics  :: Something -- TODO
 } deriving (Eq, Show)
 

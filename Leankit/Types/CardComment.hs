@@ -18,7 +18,7 @@ data CardComment = CardComment {
 
       _text                 :: Maybe String,
 
-      _taggedUsers          :: Maybe [String], -- TODO what's this?
+--      _taggedUsers          :: Maybe [Something], -- TODO what's this?
       _editable             :: Maybe Bool
 } deriving (Eq, Show)
 

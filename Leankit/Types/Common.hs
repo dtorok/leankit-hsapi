@@ -61,3 +61,7 @@ newtype PriorityID = PriorityID Int deriving (Eq, Show)
 instance FromJSON PriorityID where
         parseJSON v = PriorityID <$> parseJSON v
 
+newtype ClassOfServiceID = ClassOfServiceID Int deriving (Eq, Show)
+instance FromJSON ClassOfServiceID where
+        parseJSON v = ClassOfServiceID <$> parseJSON v
+

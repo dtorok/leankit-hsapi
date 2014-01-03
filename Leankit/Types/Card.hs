@@ -57,7 +57,8 @@ data Card = Card {
         _systemType                    :: Maybe String,
         _currentContext                :: Maybe String,
         _cardContexts                  :: Maybe [CardContext], -- ?
-        --_taskBoardTotalCards         :: [Something], -- TODO
+        _taskBoardTotalCards           :: Maybe Int,
+        _taskBoardTotalSize            :: Maybe Int,
         _blockReason                   :: Maybe String,
         _blockStateChangeDate          :: Maybe String,
 
