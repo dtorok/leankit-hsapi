@@ -25,7 +25,6 @@ data BoardIdentifierSet = BoardIdentifierSet {
 	_boardUsers       :: [BoardIdentifier UserID],
 	_priorities       :: [BoardIdentifier PriorityID],
 	_classesOfService :: [BoardIdentifier ClassOfServiceID]
---	_boardStatistics  :: Something -- TODO
 } deriving (Eq, Show)
 
 $(deriveFromJSON parseOptions ''BoardIdentifier)

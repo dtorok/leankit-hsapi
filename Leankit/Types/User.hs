@@ -25,7 +25,6 @@ data User = User {
 		_isDeleted      :: Maybe Bool,
 
 		_dateFormat     :: Maybe String,
---		_settings       :: Something, -- TODO
 		_wip            :: Maybe Int
 } deriving (Eq, Show)
 

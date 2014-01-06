@@ -26,7 +26,6 @@ data Card = Card {
         _id                            :: Int,
         _version                       :: Maybe Int,
 
-        -- _type                       :: Something, -- TODO
         _typeId                        :: Maybe Int,
         _typeName                      :: Maybe String,
         _typeColorHex                  :: Maybe Color,

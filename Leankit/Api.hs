@@ -1,48 +1,77 @@
 module Leankit.Api 
 	(
+		-- * How to use this library
+		-- $use
+		
+		-- * getBoards
+		-- | API functions for : @http:\/\/myaccount.leankit.com\/Api\/Boards@
 		getBoards,
 		getBoardsMaybe,
 		getBoardsEither,
 
+		-- * getBoard
+		-- | API functions for : @http:\/\/myaccount.leankit.com\/Api\/Boards\/{boardId}@
 		getBoard,
 		getBoardMaybe,
 		getBoardEither,
 
+		-- * getCard
+		-- | API functions for : @http:\/\/myaccount.leankit.com\/Api\/Board\/{boardId}\/GetCard\/{cardId}@
 		getCard,
 		getCardMaybe,
 		getCardEither,
 
+		-- * getBoardIdentifiers
+		-- | API functions for : @http:\/\/myaccount.leankit.com\/Api\/Board\/{boardId}\/GetBoardIdentifiers@
 		getBoardIdentifiers,
 		getBoardIdentifiersMaybe,
 		getBoardIdentifiersEither,
 
+		-- * getNewerIfExists
+		-- | API functions for : @http:\/\/myaccount.leankit.com\/Api\/Board\/{boardId}\/BoardVersion/{version}/GetNewerIfExists@
 		getNewerIfExists,
 		getNewerIfExistsMaybe,
 		getNewerIfExistsEither,
 
+		-- * getBoardHistorySince
+		-- | API functions for : @http:\/\/myaccount.leankit.com\/Api\/Board\/{boardId}\/BoardVersion/{version}/GetBoardHistorySince@
 		getBoardHistorySince,
 		getBoardHistorySinceMaybe,
 		getBoardHistorySinceEither,
 
+		-- * getCardByExternalId
+		-- | API functions for : @http:\/\/myaccount.leankit.com\/Api\/Board\/{boardId}\/GetCardByExternalId\/BZ123@
 		getCardByExternalId,
 		getCardByExternalIdMaybe,
 		getCardByExternalIdEither,
 
+		-- * getBackLog
+		-- | API functions for : @http:\/\/myaccount.leankit.com\/Api\/Board\/{boardId}\/Backlog@
 		getBackLog,
 		getBackLogMaybe,
 		getBackLogEither,
 
+		-- * getArchive
+		-- | API functions for : @http:\/\/myaccount.leankit.com\/Api\/Board\/{boardId}\/Archive@
 		getArchive,
 		getArchiveMaybe,
 		getArchiveEither,
 
+		-- * getCardHistory
+		-- | API functions for : @http:\/\/myaccount.leankit.com\/Api\/Card\/History\/{boardId}\/{cardId}@
 		getCardHistory,
 		getCardHistoryMaybe,
 		getCardHistoryEither,
 
+		-- * getCardComments
+		-- | API functions for : @http:\/\/myaccount.leankit.com\/Api\/Card\/GetComments\/{boardId}\/{cardId}@
 		getCardComments,
 		getCardCommentsMaybe,
-		getCardCommentsEither
+		getCardCommentsEither,
+
+		-- * Credentials
+		-- | This symbol is defined as 'Leankit.Types.Credentials.Credentials'
+		Credentials (Credentials)
 	) where
 
 import Data.ByteString.Lazy.Internal (ByteString)
@@ -78,7 +107,6 @@ import Leankit.Types.CardComment (CardComment)
 -- API --
 ---------
 
--- getBoards
 getBoards :: Credentials -> IO [BoardShort]
 getBoards = _either2fail <=< getBoardsEither
 
@@ -233,3 +261,13 @@ _loadPath lpath cred = do
         url = "http://" ++ _company cred ++ ".leankitkanban.com/Kanban/Api" ++ lpath
         opts = [CurlUserPwd authstr]
         authstr = _username cred ++ ":" ++ _password cred
+
+-- $use
+-- This is a thin read-only library for Leankit API. It's using 'curl' for network and 
+-- Getting all the boards:
+-- 
+-- > import Leankit.Api
+-- > import Leankit.Types.Common
+-- > let c = Credentials "myaccount" "username" "password"
+-- > getBoardEither c $ BoardID 12345
+
